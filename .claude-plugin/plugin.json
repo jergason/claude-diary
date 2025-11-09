@@ -1,0 +1,8 @@
+{
+  "name": "claude-memory",
+  "description": "Long-term memory system for Claude Code that captures learnings through diary entries and synthesizes insights through periodic reflection",
+  "version": "1.0.0",
+  "author": {
+    "name": "rlm"
+  }
+}
