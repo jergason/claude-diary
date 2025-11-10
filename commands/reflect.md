@@ -18,16 +18,12 @@ If no parameters are provided, default to analyzing the **last 10 diary entries*
 
 ## Steps to Follow
 
-1. **Check CLAUDE.md for processed entries**:
-   - Read `~/.claude/CLAUDE.md` to find the `# Memory System - Processed Entries` section
-   - Extract list of already-processed diary entry filenames
-   - If section doesn't exist yet, all entries are unprocessed
-   - Format in CLAUDE.md:
-     ```markdown
-     # Memory System - Processed Entries
-     - 2025-11-07-session-1.md (reflected: 2025-11-08)
-     - 2025-11-07-session-2.md (reflected: 2025-11-08)
-     ```
+1. **Check processed entries log**:
+   - Read `~/.claude/memory/reflections/processed.log` to find already-processed diary entries
+   - Format: `[diary-filename] | [reflection-date] | [reflection-filename]`
+   - Example: `2025-11-07-session-1.md | 2025-11-08 | 2025-11-reflection-1.md`
+   - If file doesn't exist, all entries are unprocessed
+   - Create the file if it doesn't exist: `touch ~/.claude/memory/reflections/processed.log`
 
 2. **Locate diary entries**:
    - Directory: `~/.claude/memory/diary/`
@@ -230,20 +226,25 @@ Below are proposed additions to your `~/.claude/CLAUDE.md` file. **Review these 
    - Filename format: `YYYY-MM-reflection-N.md` (increment N if multiple reflections in same month)
    - Save to: `~/.claude/memory/reflections/[filename]`
 
-9. **Update CLAUDE.md processed entries tracking**:
-   - Add or update the `# Memory System - Processed Entries` section in `~/.claude/CLAUDE.md`
-   - List all diary entries just analyzed with reflection date
-   - Format: `- [diary-filename] (reflected: YYYY-MM-DD)`
-   - If section doesn't exist, add it at the bottom of CLAUDE.md
-   - If section exists, append new entries
-   - **IMPORTANT**: Only update this tracking section, do NOT add the proposed rules yet
-   - The user will review and approve rules separately in next step
+9. **Automatically update CLAUDE.md with proposed rules**:
+   - Append the proposed rules to `~/.claude/CLAUDE.md`
+   - Organize rules into sections (Git & PR Workflow, Code Quality & Style, Testing, Project-Specific)
+   - Add new sections if they don't exist
+   - Append to existing sections if they already exist
+   - Maintain the succinct bullet-point format
+   - Show the user what was added to CLAUDE.md
 
-10. **Present the reflection to the user**:
-   - Display the proposed CLAUDE.md updates prominently
-   - Ask the user to review and confirm which updates they want to apply
-   - Offer to help apply approved updates to their CLAUDE.md file
-   - Explain that user review is critical to maintain quality
+10. **Update processed entries log**:
+   - Append processed diary entries to `~/.claude/memory/reflections/processed.log`
+   - Format: `[diary-filename] | [YYYY-MM-DD] | [reflection-filename]`
+   - One line per diary entry processed
+   - Example: `2025-11-07-session-1.md | 2025-11-08 | 2025-11-reflection-1.md`
+
+11. **Present completion summary to user**:
+   - Display the reflection filename and location
+   - Show how many patterns were identified
+   - List the CLAUDE.md sections that were updated
+   - Confirm that processed.log was updated
 
 ## Important Guidelines
 
@@ -303,10 +304,12 @@ Before proposing a CLAUDE.md update, verify:
 - If diary entries are malformed, skip them and document which ones had issues
 - If the reflections directory cannot be created, report the error
 - If CLAUDE.md cannot be read or written, report the error but continue with reflection
+- If processed.log cannot be read, assume no entries have been processed yet
+- If processed.log cannot be written, report the error
 
 ## Handling Already-Processed Entries
 
-**Default behavior**: Skip entries already listed in `# Memory System - Processed Entries`
+**Default behavior**: Skip entries already listed in `~/.claude/memory/reflections/processed.log`
 
 **User can override** with these flags:
 - "include all entries" - re-analyze everything including processed entries

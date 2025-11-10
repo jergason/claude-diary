@@ -54,7 +54,17 @@ cp commands/*.md ~/.claude/commands/
 
 ### Creating Diary Entries
 
-After any significant Claude Code session, run:
+**Automatic (Recommended)**: Install the SessionEnd hook for automatic diary generation:
+
+```bash
+mkdir -p ~/.claude/hooks
+cp hooks/session-end.sh ~/.claude/hooks/session-end.sh
+chmod +x ~/.claude/hooks/session-end.sh
+```
+
+Now a diary entry will be automatically created at the end of every Claude Code session.
+
+**Manual**: You can also run the diary command manually:
 
 ```bash
 /diary
@@ -110,33 +120,41 @@ After accumulating several diary entries (recommended: 5-10+), run:
 ```
 
 This will:
-- Read and analyze multiple diary entries (skipping already-processed ones by default)
+- Check `~/.claude/memory/reflections/processed.log` for already-analyzed entries
+- Read and analyze unprocessed diary entries
 - Identify patterns that appear 2+ times (persistent preferences)
 - Extract PR review feedback patterns (avoiding "AI-looking" code)
 - Distinguish project-specific patterns from universal ones
 - Identify effective approaches and anti-patterns to avoid
 - Generate a reflection document at `~/.claude/memory/reflections/YYYY-MM-reflection-N.md`
-- **Update `CLAUDE.md` with processed entries tracking**
-- **Propose succinct, actionable updates to your `~/.claude/CLAUDE.md` file**
+- **Automatically append actionable rules to your `~/.claude/CLAUDE.md` file**
+- Update `processed.log` with analyzed entries
 
-**Important**: Review all proposed `CLAUDE.md` updates carefully before applying them. The reflection command will present them for your approval.
+**Processed Entries Tracking**: The system maintains `~/.claude/memory/reflections/processed.log` to track which diary entries have been analyzed. This prevents duplicate analysis and allows you to run `/reflect` ad hoc as new diary entries accumulate.
 
 ## Directory Structure
 
 The plugin creates and uses these directories:
 
 ```
-~/.claude/memory/
-├── diary/              # Session diary entries
-│   ├── 2025-01-15-session-1.md
-│   ├── 2025-01-15-session-2.md
-│   └── 2025-01-16-session-1.md
-└── reflections/        # Synthesized insights
-    ├── 2025-01-reflection-1.md
-    └── 2025-02-reflection-1.md
+~/.claude/
+├── hooks/
+│   └── session-end.sh           # Auto-generates diary at session end
+├── memory/
+│   ├── diary/                   # Session diary entries
+│   │   ├── 2025-01-15-session-1.md
+│   │   ├── 2025-01-15-session-2.md
+│   │   └── 2025-01-16-session-1.md
+│   └── reflections/             # Synthesized insights & tracking
+│       ├── 2025-01-reflection-1.md
+│       ├── 2025-02-reflection-1.md
+│       └── processed.log        # Tracks which entries have been analyzed
+└── CLAUDE.md                    # Rules automatically updated by /reflect
 ```
 
 These directories are automatically created on first use.
+
+**processed.log format**: `[diary-entry] | [reflection-date] | [reflection-file]`
 
 ## How It Works
 
@@ -173,7 +191,7 @@ The `/reflect` command uses several principles to distinguish signal from noise:
 - Contradictory to established patterns
 - Too context-specific to be useful generally
 
-**Processed entries tracking**: The reflect command tracks which diary entries have been analyzed in a `# Memory System - Processed Entries` section in CLAUDE.md, preventing duplicate analysis and allowing incremental reflection.
+**Processed entries tracking**: The reflect command maintains `~/.claude/memory/reflections/processed.log` to track which diary entries have been analyzed, preventing duplicate analysis and allowing ad hoc incremental reflection.
 
 ### Example Pattern Evolution
 
@@ -336,16 +354,19 @@ Analyzed 10 diary entries spanning 8 days across 3 different projects. Strong pa
 
 ## Roadmap
 
-### Phase 1: Manual Diary Entries ✅ (Current)
-- `/diary` command for manual diary creation
+### Phase 1: Core Memory System ✅ (Complete)
+- `/diary` command for diary creation
+- Automatic diary generation via SessionEnd hook
 - `/reflect` command for pattern analysis
-- Manual CLAUDE.md updates
+- Automatic CLAUDE.md updates with actionable rules
+- processed.log tracking for incremental reflection
+- Ad hoc reflection runs on accumulated entries
 
 ### Phase 2: Enhanced Analysis (Future)
-- Automatic diary entry creation via hooks
 - Vector similarity search over diary entries
 - "Show me how I solved X before" retrieval
 - Confidence scoring for patterns
+- Cross-session pattern validation
 
 ### Phase 3: Integration (Future)
 - Automatic context surfacing in new sessions
