@@ -114,6 +114,20 @@ To modify or extend:
 2. Test locally using the local marketplace approach
 3. Share your improvements
 
+## Future work
+
+**Opportunities for improvement**:
+
+1. **Project-level memory** - Support Claude Code's multiple memory tiers to enable context-appropriate rules (React patterns for React projects, Python conventions for Python projects)
+
+2. **Session metadata API** - An official API for session introspection would eliminate JSONL parsing workarounds
+
+3. **Adaptive reflection** - Optionally trigger reflection when N unprocessed entries accumulate, reducing manual overhead while preserving user control
+
+4. **Memory retrieval** - Proactively surface relevant past learnings based on current context ("Last time you worked on authentication, you preferred JWT")
+
+5. **Cross-project learning** - Detect when the same problem appears across different projects, suggesting generalizable solutions
+
 ## License
 
 MIT License - feel free to use, modify, and share.
