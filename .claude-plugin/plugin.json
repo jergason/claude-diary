@@ -1,12 +1,12 @@
 {
-  "name": "claude-memory",
+  "name": "claude-diary",
   "description": "Long-term memory system for Claude Code that captures learnings through diary entries and synthesizes insights through periodic reflection",
   "version": "1.0.0",
   "author": {
-    "name": "rlm"
+    "name": "Jamison Dance"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/rlancemartin/claude-diary"
+    "url": "https://github.com/jergason/claude-diary"
   }
 }

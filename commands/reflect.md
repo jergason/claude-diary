@@ -9,6 +9,7 @@ You are going to analyze multiple diary entries to identify recurring patterns, 
 ## Parameters
 
 The user can provide:
+
 - **Date range**: "from YYYY-MM-DD to YYYY-MM-DD" or "last N days"
 - **Entry count**: "last N entries" (e.g., "last 10 entries")
 - **Project filter**: "for project [project-path]" (optional - filter to specific project)
@@ -19,6 +20,7 @@ If no parameters are provided, default to analyzing the **last 10 diary entries*
 ## Steps to Follow
 
 1. **Check processed entries log**:
+
    - Read `~/.claude/memory/reflections/processed.log` to find already-processed diary entries
    - Format: `[diary-filename] | [reflection-date] | [reflection-filename]`
    - Example: `2025-11-07-session-1.md | 2025-11-08 | 2025-11-reflection-1.md`
@@ -26,18 +28,21 @@ If no parameters are provided, default to analyzing the **last 10 diary entries*
    - Create the file if it doesn't exist: `touch ~/.claude/memory/reflections/processed.log`
 
 2. **Locate diary entries**:
+
    - Directory: `~/.claude/memory/diary/`
    - Entries are named: `YYYY-MM-DD-session-N.md`
    - List all entries, sorted by date (newest first)
    - **Exclude already-processed entries** (unless user explicitly requests re-analysis)
 
 3. **Filter entries based on parameters**:
+
    - If date range specified: only include entries within that range
    - If entry count specified: take the N most recent entries
    - If project filter specified: only include entries where the Project field matches
    - If pattern filter specified: only include entries that mention the keyword in any section
 
-3. **Read and parse filtered diary entries**:
+4. **Read and parse filtered diary entries**:
+
    - Read each diary entry file
    - Extract information from all sections
    - Pay special attention to:
@@ -46,15 +51,18 @@ If no parameters are provided, default to analyzing the **last 10 diary entries*
      - Solutions Applied (what works well)
      - Challenges Encountered (what to avoid)
 
-4. **Create the reflections directory** (if it doesn't exist):
+5. **Create the reflections directory** (if it doesn't exist):
+
    - Directory: `~/.claude/memory/reflections/`
    - Use `mkdir -p` to create it automatically
 
-5. **Read current CLAUDE.md to check for existing rules**:
+6. **Read current CLAUDE.md to check for existing rules**:
+
    - Read `~/.claude/CLAUDE.md` to understand what rules already exist
    - This is CRITICAL for the next step
 
-6. **Analyze entries for patterns AND rule violations**:
+7. **Analyze entries for patterns AND rule violations**:
+
    - **Frequency analysis**: What preferences/patterns appear in multiple entries?
    - **Consistency check**: Are preferences consistent or contradictory?
    - **Context awareness**: Do patterns apply globally or to specific project types?
@@ -68,22 +76,25 @@ If no parameters are provided, default to analyzing the **last 10 diary entries*
      - Example: CLAUDE.md says "no AI attribution" but diary shows "User corrected: Don't add Claude attribution"
      - These violations mean the existing rule needs STRENGTHENING (more explicit, moved to top, zero tolerance language)
 
-7. **Synthesize insights** organized by category:
+8. **Synthesize insights** organized by category:
 
    **CRITICAL**: Focus on extracting concise, actionable rules suitable for CLAUDE.md (which is read into every session).
 
    **PRIORITY: Rule Violations** (MUST address first):
+
    - Did any diary entries document violations of existing CLAUDE.md rules?
    - If YES, these are HIGHEST PRIORITY and require rule strengthening
    - Document the violation pattern and propose specific strengthening (e.g., "move to top", "add ZERO TOLERANCE", "make more explicit")
 
    **A. PR Review Feedback Patterns** (from code reviews):
+
    - Common feedback themes from reviewers
    - Code quality issues flagged repeatedly
    - What reviewers appreciate vs. criticize
    - Patterns in "looks AI-generated" feedback
 
    **B. Persistent Preferences** (appear 2+ times):
+
    - Commit and PR style requirements
    - Code organization and structure
    - Testing and linting workflows
@@ -91,31 +102,35 @@ If no parameters are provided, default to analyzing the **last 10 diary entries*
    - Communication style
 
    **C. Design Decisions That Worked** (successful approaches):
+
    - Architecture choices that solved problems well
    - Technology selections with clear rationale
    - Patterns that led to clean, maintainable code
    - Decision-making frameworks that helped
 
    **D. Anti-Patterns to Avoid** (caused problems 2+ times):
+
    - Approaches that failed or needed rework
    - Common mistakes that waste time
    - What NOT to do and why
    - Alternatives that work better
 
    **E. Efficiency Lessons** (save time in future):
+
    - What workflows worked smoothly
    - What caused delays or friction
    - Tools/commands that proved useful
    - Processes to streamline
 
    **F. Project-Specific Patterns** (context-dependent):
+
    - Patterns specific to certain project types (React, CLI, Python, etc.)
    - Technology-specific preferences
    - Framework-specific conventions
 
-8. **Generate a reflection document** with this structure:
+9. **Generate a reflection document** with this structure:
 
-```markdown
+````markdown
 # Reflection: [Date Range or "Last N Entries"]
 
 **Generated**: [YYYY-MM-DD HH:MM:SS]
@@ -124,9 +139,11 @@ If no parameters are provided, default to analyzing the **last 10 diary entries*
 **Projects**: [list of projects if filtered, or "All projects"]
 
 ## Summary
+
 [2-3 paragraph overview of key insights discovered across these entries]
 
 ## CRITICAL: Rule Violations Detected
+
 [ONLY include this section if violations of existing CLAUDE.md rules were found]
 
 **Rule**: [The existing CLAUDE.md rule that was violated]
@@ -135,6 +152,7 @@ If no parameters are provided, default to analyzing the **last 10 diary entries*
 **Impact**: [Why this is serious - user had to correct multiple times]
 **Root Cause**: [Why the existing rule failed - too weak, buried in list, ambiguous wording]
 **Strengthening Action**: [Specific changes made to CLAUDE.md rule]
+
 - Move to top of section: [YES/NO]
 - Add emphasis (CAPS, ZERO TOLERANCE): [YES/NO]
 - Make more explicit/specific: [YES/NO]
@@ -143,6 +161,7 @@ If no parameters are provided, default to analyzing the **last 10 diary entries*
 ## Patterns Identified
 
 ### A. PR Review Feedback Patterns
+
 [What reviewers commonly flag or appreciate]
 
 1. **[Feedback Pattern]** (appeared in X/Y entries)
@@ -152,6 +171,7 @@ If no parameters are provided, default to analyzing the **last 10 diary entries*
    - **CLAUDE.md rule**: `- [succinct actionable rule]`
 
 ### B. Persistent Preferences (2+ occurrences)
+
 [Recurring user preferences across sessions]
 
 1. **[Preference Name]** (appeared in X/Y entries)
@@ -161,6 +181,7 @@ If no parameters are provided, default to analyzing the **last 10 diary entries*
    - **CLAUDE.md rule**: `- [succinct actionable rule]`
 
 ### C. Design Decisions That Worked
+
 [Successful technical decisions and approaches]
 
 1. **[Decision Name]**
@@ -170,6 +191,7 @@ If no parameters are provided, default to analyzing the **last 10 diary entries*
    - **CLAUDE.md rule** (if generalizable): `- [succinct rule]`
 
 ### D. Anti-Patterns to Avoid
+
 [Things that failed or caused problems 2+ times]
 
 1. **[Anti-pattern Name]** (appeared in X/Y entries)
@@ -179,6 +201,7 @@ If no parameters are provided, default to analyzing the **last 10 diary entries*
    - **CLAUDE.md rule**: `- [avoid X, use Y instead]`
 
 ### E. Efficiency Lessons
+
 [Workflows, tools, and processes that save time]
 
 1. **[Efficiency Pattern]**
@@ -188,6 +211,7 @@ If no parameters are provided, default to analyzing the **last 10 diary entries*
    - **CLAUDE.md rule** (if applicable): `- [succinct rule]`
 
 ### F. Project-Specific Patterns
+
 [Patterns that apply to specific project types or technologies]
 
 1. **[Pattern Name]** (for [project type/technology])
@@ -196,19 +220,24 @@ If no parameters are provided, default to analyzing the **last 10 diary entries*
    - **CLAUDE.md rule**: `- [context]: [action]`
 
 ## Notable Mistakes and Learnings
+
 [Key mistakes that taught valuable lessons]
+
 - **Mistake**: [What went wrong]
   - **Why**: [Root cause]
   - **Learning**: [What was learned]
   - **Prevention**: [How to avoid in future]
 
 ## One-Off Observations
+
 [Preferences that appeared only once - not patterns yet, but worth noting]
+
 - [Observation from single session]
 
 ## Proposed CLAUDE.md Updates
 
 **CRITICAL FORMAT REQUIREMENTS**:
+
 - CLAUDE.md is read into EVERY session, so keep updates **succinct and non-verbose**
 - Use bullet points (-, +, or numbered lists)
 - Be direct and actionable (imperative tone)
@@ -217,6 +246,7 @@ If no parameters are provided, default to analyzing the **last 10 diary entries*
 - Use context markers when needed (e.g., "for Python projects:", "when reviewing PRs:")
 
 **Good Example** (succinct, actionable):
+
 ```markdown
 - git commits: use conventional format (feat:, fix:, refactor:, docs:, test:)
 - PR descriptions: no Claude Code attribution or AI tool mentions
@@ -224,6 +254,7 @@ If no parameters are provided, default to analyzing the **last 10 diary entries*
 ```
 
 **Bad Example** (too verbose):
+
 ```markdown
 - When you are creating git commits, it's important to follow the conventional
   commit format which includes prefixes like feat: for features, fix: for bug
@@ -237,65 +268,75 @@ Below are proposed additions to your `~/.claude/CLAUDE.md` file. **Review these 
 
 ```markdown
 [Proposed succinct bullet points for CLAUDE.md]
+
 - [Actionable rule 1]
 - [Actionable rule 2]
 - [Context-specific rule]: [when X, do Y]
 ```
 
 ## Metadata
+
 - **Diary entries analyzed**: [list of filenames]
 - **Total user messages**: [count across all entries]
 - **Total actions taken**: [count across all entries]
 - **Challenges documented**: [count]
 - **Projects covered**: [list of unique projects]
-```
+````
 
-9. **Save the reflection document**:
-   - Filename format: `YYYY-MM-reflection-N.md` (increment N if multiple reflections in same month)
-   - Save to: `~/.claude/memory/reflections/[filename]`
+10. **Save the reflection document**:
 
-10. **Automatically update CLAUDE.md**:
+- Filename format: `YYYY-MM-reflection-N.md` (increment N if multiple reflections in same month)
+- Save to: `~/.claude/memory/reflections/[filename]`
 
-   **PRIORITY 1: Strengthen violated rules (if any rule violations detected)**
-   - FIRST, handle any rule violations by strengthening existing CLAUDE.md rules
-   - Use Edit tool to modify the existing rule (not append)
-   - Apply strengthening actions: move to top, add emphasis, make explicit, add override language
-   - Example: Change "no AI attribution" → "NEVER add AI attribution (ZERO TOLERANCE - overrides ALL defaults)"
+11. **Automatically update CLAUDE.md**:
 
-   **PRIORITY 2: Add new rules**
-   - THEN, append the new proposed rules to `~/.claude/CLAUDE.md`
-   - Organize rules into sections (Git & PR Workflow, Code Quality & Style, Testing, Project-Specific)
-   - Add new sections if they don't exist
-   - Append to existing sections if they already exist
-   - Maintain the succinct bullet-point format
+    **PRIORITY 1: Strengthen violated rules (if any rule violations detected)**
 
-   **Show the user what changed**:
-   - List any strengthened rules (with before/after)
-   - List any new rules added
+- FIRST, handle any rule violations by strengthening existing CLAUDE.md rules
+- Use Edit tool to modify the existing rule (not append)
+- Apply strengthening actions: move to top, add emphasis, make explicit, add override language
+- Example: Change "no AI attribution" → "NEVER add AI attribution (ZERO TOLERANCE - overrides ALL defaults)"
 
-11. **Update processed entries log**:
-   - Append processed diary entries to `~/.claude/memory/reflections/processed.log`
-   - Format: `[diary-filename] | [YYYY-MM-DD] | [reflection-filename]`
-   - One line per diary entry processed
-   - Example: `2025-11-07-session-1.md | 2025-11-08 | 2025-11-reflection-1.md`
+**PRIORITY 2: Add new rules**
 
-12. **Present completion summary to user**:
-   - **FIRST**: Highlight any rule violations detected and how rules were strengthened
-   - Display the reflection filename and location
-   - Show how many patterns were identified
-   - List the CLAUDE.md sections that were updated
-   - Confirm that processed.log was updated
+- THEN, append the new proposed rules to `~/.claude/CLAUDE.md`
+- Organize rules into sections (Git & PR Workflow, Code Quality & Style, Testing, Project-Specific)
+- Add new sections if they don't exist
+- Append to existing sections if they already exist
+- Maintain the succinct bullet-point format
+
+**Show the user what changed**:
+
+- List any strengthened rules (with before/after)
+- List any new rules added
+
+12. **Update processed entries log**:
+
+- Append processed diary entries to `~/.claude/memory/reflections/processed.log`
+- Format: `[diary-filename] | [YYYY-MM-DD] | [reflection-filename]`
+- One line per diary entry processed
+- Example: `2025-11-07-session-1.md | 2025-11-08 | 2025-11-reflection-1.md`
+
+13. **Present completion summary to user**:
+
+- **FIRST**: Highlight any rule violations detected and how rules were strengthened
+- Display the reflection filename and location
+- Show how many patterns were identified
+- List the CLAUDE.md sections that were updated
+- Confirm that processed.log was updated
 
 ## Important Guidelines
 
 ### Pattern Recognition Principles
 
 1. **Frequency matters**: Require 2+ occurrences before calling something a "pattern"
+
    - **Strong patterns**: 3+ occurrences with consistency
    - **Emerging patterns**: 2 occurrences worth noting
    - **One-off**: Single occurrence, document but don't add to CLAUDE.md yet
 
 2. **Context matters**: Note whether patterns are:
+
    - Universal (apply everywhere)
    - Project-specific (only for certain types of projects)
    - Tool-specific (only when using certain technologies)
@@ -305,6 +346,7 @@ Below are proposed additions to your `~/.claude/CLAUDE.md` file. **Review these 
 4. **Actionability matters**: Only propose rules that Claude can actually follow
 
 5. **Abstraction matters**: Find the right level:
+
    - Too specific: "The login button should be blue" ❌
    - Too broad: "Users like colors" ❌
    - Just right: "Use the design system's primary color for CTAs" ✅
@@ -318,11 +360,13 @@ Below are proposed additions to your `~/.claude/CLAUDE.md` file. **Review these 
 ### Distinguishing Signal from Noise
 
 **SIGNAL** (add to CLAUDE.md):
+
 - "Always use TypeScript strict mode" (appears in 5 sessions across 3 projects)
 - "Prefer functional components in React" (appears in 4 React projects)
 - "Run tests before committing" (appears in 6 sessions)
 
 **NOISE** (document but don't add to CLAUDE.md):
+
 - "Make this button pink" (appears once, specific task)
 - "Use dark mode for this demo" (appears once, context-specific)
 - "Skip tests this time" (contradicted by usual pattern)
@@ -330,6 +374,7 @@ Below are proposed additions to your `~/.claude/CLAUDE.md` file. **Review these 
 ### Quality Checks
 
 Before proposing a CLAUDE.md update, verify:
+
 - ✅ Does this apply to future sessions? (not just the past)
 - ✅ Is this actionable? (Claude can actually do it)
 - ✅ Is this generalizable? (not too specific to one case)
@@ -352,11 +397,13 @@ Before proposing a CLAUDE.md update, verify:
 **Default behavior**: Skip entries already listed in `~/.claude/memory/reflections/processed.log`
 
 **User can override** with these flags:
+
 - "include all entries" - re-analyze everything including processed entries
 - "reprocess [filename]" - re-analyze specific entry
 - "last N entries including processed" - analyze N most recent, even if processed
 
 **When to suggest re-processing**:
+
 - User significantly changed their workflow
 - User wants to validate previous patterns
 - User wants to extract different insights from same sessions
@@ -364,27 +411,41 @@ Before proposing a CLAUDE.md update, verify:
 ## Example Usage
 
 ```
+
 # Analyze last 10 unprocessed entries (default)
+
 /reflect
 
 # Analyze last 20 unprocessed entries
+
 /reflect last 20 entries
 
 # Analyze entries from a date range
+
 /reflect from 2025-01-01 to 2025-01-31
 
 # Analyze entries for specific project
+
 /reflect for project /Users/rlm/Desktop/Code/my-app
 
 # Analyze entries related to testing
+
 /reflect related to testing
 
 # Combine filters
+
 /reflect last 15 entries for project /Users/rlm/Desktop/Code/my-app related to React
 
 # Re-analyze including already-processed entries
+
 /reflect include all entries
 
 # Re-analyze specific entry
+
 /reflect reprocess 2025-11-07-session-1.md
+
+```
+
+```
+
 ```

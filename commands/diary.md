@@ -10,6 +10,7 @@ You are going to create a structured diary entry that documents what happened in
 
 **Primary Method (use this first):**
 Reflect on the conversation history loaded in this session. You have access to:
+
 - All user messages and requests
 - Your responses and tool invocations
 - Files you read, edited, or wrote
@@ -18,6 +19,7 @@ Reflect on the conversation history loaded in this session. You have access to:
 - User preferences expressed
 
 **When to use JSONL fallback (rare):**
+
 - Session was compacted and context is incomplete
 - You need precise statistics (exact tool counts, timestamps)
 - User specifically requests detailed session analysis
@@ -49,6 +51,7 @@ fi
 ```
 
 **What this does:**
+
 - Converts current directory to project hash format (e.g., `/Users/name/Code/app` → `-Users-name-Code-app`)
 - Note the LEADING DASH in the path format
 - Finds the most recent `.jsonl` file in that project's directory
@@ -86,63 +89,82 @@ Based on the conversation context (and optional metadata from Step 3), create a 
 **Git Branch**: [branch name if available]
 
 ## Task Summary
+
 [2-3 sentences: What was the user trying to accomplish based on the user messages?]
 
 ## Work Summary
+
 [Bullet list of what was accomplished:]
+
 - Features implemented
 - Bugs fixed
 - Documentation added
 - Tests written
 
 ## Design Decisions Made
+
 [IMPORTANT: Document key technical decisions and WHY they were made:]
+
 - Architectural choices (e.g., "Used React Context instead of Redux because...")
 - Technology selections
 - API design decisions
 - Pattern selections
 
 ## Actions Taken
+
 [Based on tool usage and file operations:]
+
 - Files edited: [list paths from "FILES MODIFIED"]
 - Commands executed: [from git operations]
 - Tools used: [from tool usage counts]
 
 ## Code Review & PR Feedback
+
 [CRITICAL: Capture any feedback about code quality or style:]
+
 - PR comments mentioned
 - Code quality feedback
 - Linting issues
 - Style preferences
 
 ## Challenges Encountered
+
 [Based on errors and user corrections:]
+
 - Errors encountered [from "ERRORS" section]
 - Failed approaches
 - Debugging steps
 
 ## Solutions Applied
+
 [How problems were resolved]
 
 ## User Preferences Observed
+
 [CRITICAL: Document preferences for commits, testing, code style, etc.]
 
 ### Commit & PR Preferences:
+
 - [Any patterns around commit messages, PR descriptions]
 
 ### Code Quality Preferences:
+
 - [Testing requirements, linting preferences]
 
 ### Technical Preferences:
+
 - [Libraries, patterns, frameworks preferred]
 
 ## Code Patterns and Decisions
+
 [Technical patterns used]
 
 ## Context and Technologies
+
 [Project type, languages, frameworks]
 
 ## Notes
+
 [Any other observations]
 ```
 
@@ -168,6 +190,7 @@ Use the Write tool to actually write the diary content to the determined file pa
 ### 5. Confirm Completion
 
 Display:
+
 - Path where diary was saved
 - Brief summary of what was captured
 
@@ -182,21 +205,23 @@ Display:
 
 ## Decision Guide: When to Use Each Approach
 
-| Situation | Approach | Reasoning |
-|-----------|----------|-----------|
-| During active session | **Context only** | All information available, 0 tool calls |
-| PreCompact hook trigger | **Context only** | Session still in memory |
-| Post-session analysis | **JSONL fallback** | Context no longer available |
-| Need exact statistics | **JSONL metadata** | Precise counts unavailable from context |
-| User says "create diary" | **Context first** | Assume current session unless specified |
+| Situation                | Approach           | Reasoning                               |
+| ------------------------ | ------------------ | --------------------------------------- |
+| During active session    | **Context only**   | All information available, 0 tool calls |
+| PreCompact hook trigger  | **Context only**   | Session still in memory                 |
+| Post-session analysis    | **JSONL fallback** | Context no longer available             |
+| Need exact statistics    | **JSONL metadata** | Precise counts unavailable from context |
+| User says "create diary" | **Context first**  | Assume current session unless specified |
 
 ## Error Handling
 
 **Context-based errors:**
+
 - If context seems incomplete, mention what's missing and offer to use JSONL fallback
 - If uncertain about details, document with "approximately" or "unclear from context"
 
 **JSONL-based errors:**
+
 - If session file not found, show where you looked (remember: `-Users-...` format with leading dash)
 - Check `ls -la ~/.claude/projects/` to help diagnose path issues
 - If transcript is malformed, document what you could parse and fall back to context

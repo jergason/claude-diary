@@ -1,0 +1,13 @@
+{
+  "name": "local-plugins",
+  "owner": {
+    "name": "Local"
+  },
+  "plugins": [
+    {
+      "name": "claude-diary",
+      "source": "./",
+      "description": "Long-term memory system for Claude Code"
+    }
+  ]
+}
